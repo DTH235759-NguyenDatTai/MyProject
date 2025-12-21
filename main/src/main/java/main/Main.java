@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
-import Login.Login;
+import account.Login;
 
 public class Main extends JFrame{
     public Main() {
