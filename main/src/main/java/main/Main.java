@@ -11,9 +11,9 @@ import account.Login;
 public class Main extends JFrame{
     public Main() {
         setTitle("Hệ thống quản lý Siêu Thị");
-        setSize(900, 600);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null); // Hiển thị giữa màn hình
+        setLocationRelativeTo(null); 
         setLayout(new GridBagLayout());
 
         JButton button = new JButton("Đăng nhập");

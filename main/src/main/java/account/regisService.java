@@ -8,7 +8,7 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import DBConnection.DBConnection;
 
-public class regisService {
+public class RegisService {
     public boolean checkRegis(String name, String email, String password){
         String hashPass = BCrypt.hashpw(password, BCrypt.gensalt());
 
