@@ -112,7 +112,9 @@ public class Login extends JFrame {
 
         // Kiểm tra nhanh rỗng
         if (email.isEmpty() || password.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Vui lòng không để trống Email/Password!");
+            JOptionPane.showMessageDialog(this, "Vui lòng không để trống Email/Password!",
+                 "Thông báo", JOptionPane.INFORMATION_MESSAGE
+            );
             return;
         }
 
@@ -120,11 +122,15 @@ public class Login extends JFrame {
         boolean success = loginService.checkLogin(email, password);
 
         if (success) {
-            JOptionPane.showMessageDialog(this, "Đăng nhập thành công!");
+            JOptionPane.showMessageDialog(this, "Đăng nhập thành công!",
+                "Thông báo", JOptionPane.INFORMATION_MESSAGE
+            );
             this.dispose(); 
             // Ở đây bạn có thể gọi màn hình Dashboard mới: new Dashboard().setVisible(true);
         } else {
-            JOptionPane.showMessageDialog(this, "Tài khoản hoặc mật khẩu không chính xác!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Tài khoản hoặc mật khẩu không chính xác!", 
+            "Lỗi", JOptionPane.ERROR_MESSAGE
+            );
         }
     }
 }

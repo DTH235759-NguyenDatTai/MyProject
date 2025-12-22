@@ -8,6 +8,7 @@ public class register extends JFrame{
     private JTextField tfEmail;
     private JTextField tfName;
     private JPasswordField tfPass;
+    private regisService regis;
 
     public register(){
         // 1. Cấu hình cơ bản cho Frame
@@ -18,6 +19,7 @@ public class register extends JFrame{
         getContentPane().setBackground(new Color(200, 230, 255)); // Màu xanh biển nhẹ
 
         // Khởi tạo service xử lý logic
+        regis = new regisService();
 
         // 2. Thiết lập Layout
         setLayout(new GridBagLayout());
@@ -109,6 +111,32 @@ public class register extends JFrame{
     }
 
     public void performRegis(){
+        String name = tfName.getText().trim();
+        String email = tfEmail.getText().trim();
+        String password = new String(tfPass.getPassword());
+
+        if(name.isEmpty() || email.isEmpty() || password.isEmpty()){
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy đủ thông tin!",
+                 "Thông báo", JOptionPane.INFORMATION_MESSAGE
+            );
+            return;
+        }
+
+        boolean isSuccess = regis.checkRegis(name, email, password);
         
+        if(isSuccess){
+            JOptionPane.showMessageDialog(this, "Đăng ký thành công!" + "\nChào mừng " + name,
+                 "Thông báo", JOptionPane.INFORMATION_MESSAGE
+            );
+            this.dispose();
+            new Login().setVisible(true);           
+        }
+
+        else{
+            JOptionPane.showMessageDialog(this, "Đăng ký thất bại. Lỗi hệ thống!",
+                 "Thông báo", JOptionPane.ERROR_MESSAGE
+            );
+            return;
+        }
     }
 }
