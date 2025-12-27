@@ -1,29 +1,13 @@
 package account;
 
-import java.sql.*;
-
-import org.mindrot.jbcrypt.BCrypt;
-
-import DBConnection.DBConnection;
+import dao.AccountDAO;
+import model.User;
 
 public class LoginService {
-    public boolean checkLogin(String email, String password){
-        String sql = "SELECT * FROM users WHERE email = ?";
 
-        try (Connection conn  = DBConnection.getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql)){
-            
-                // Truyền tham số vào dấu ?
-                ps.setString(1, email);
-                ResultSet rs = ps.executeQuery();
+    private AccountDAO accountDAO = new AccountDAO();
 
-                if(rs.next()){
-                    String storeHash = rs.getString("password");
-                    return BCrypt.checkpw(password, storeHash);
-                }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
+    public User login(String email, String password) {
+        return accountDAO.login(email, password);
     }
 }

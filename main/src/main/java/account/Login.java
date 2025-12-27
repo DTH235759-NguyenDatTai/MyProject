@@ -2,6 +2,7 @@ package account;
 
 import javax.swing.*;
 import java.awt.*;
+import model.User;
 
 public class Login extends JFrame {
 
@@ -156,9 +157,12 @@ public class Login extends JFrame {
             return;
         }
 
-        boolean success = loginService.checkLogin(email, password);
+        User user = loginService.login(email, password);
 
-        if (success) {
+        if (user != null) {
+            Session.isLogin = true;
+            Session.username = user.getUsername();
+            Session.email = user.getEmail();
             JOptionPane.showMessageDialog(this,
                     "Đăng nhập thành công!",
                     "Thông báo", JOptionPane.INFORMATION_MESSAGE);
@@ -170,34 +174,37 @@ public class Login extends JFrame {
         }
     }
 
-    private void performRegis(){
+    private void performRegis() {
         String name = tfUsernameReg.getText().trim();
         String email = tfEmailReg.getText().trim();
-        String password = new String(tfPassReg.getPassword());
+        String password = new String(tfPassReg.getPassword()).trim();
 
-        if(name.isEmpty() || email.isEmpty() || password.isEmpty()){
-            JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy đủ thông tin!",
-                 "Thông báo", JOptionPane.INFORMATION_MESSAGE
-            );
+        if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Vui lòng nhập đầy đủ thông tin!",
+                    "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
 
         boolean isSuccess = regisService.checkRegis(name, email, password);
-        
-        if(isSuccess){
-            JOptionPane.showMessageDialog(this, "Đăng ký thành công!" + "\nChào mừng " + name,
-                 "Thông báo", JOptionPane.INFORMATION_MESSAGE
-            );
-            cardLayout.show(cardPanel, LOGIN);
-        }
 
-        else{
-            JOptionPane.showMessageDialog(this, "Đăng ký thất bại. Lỗi hệ thống!",
-                 "Thông báo", JOptionPane.ERROR_MESSAGE
-            );
-            return;
+        if (isSuccess) {
+            JOptionPane.showMessageDialog(this,
+                    "Đăng ký thành công!\nChào mừng " + name,
+                    "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+
+            tfUsernameReg.setText("");
+            tfEmailReg.setText("");
+            tfPassReg.setText("");
+
+            cardLayout.show(cardPanel, LOGIN);
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "Email đã tồn tại hoặc lỗi hệ thống!",
+                    "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }
+
 
     // ================= UTILS =================
     private GridBagConstraints baseGbc() {
