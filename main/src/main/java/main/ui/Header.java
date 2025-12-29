@@ -1,13 +1,21 @@
 package main.ui;
 
 import java.awt.*;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import javax.swing.*;
 
-import account.*;
+import account.Session;
+import main.Main;
 
 public class Header extends JPanel {
 
-    public Header(JFrame parentFrame) {
+    private Main mainFrame;
+    private JButton activeBtn;
+
+    public Header(Main mainFrame) {
+        this.mainFrame = mainFrame;
+
         setLayout(new BorderLayout());
         setBackground(new Color(140, 190, 95));
         setPreferredSize(new Dimension(0, 70));
@@ -31,25 +39,53 @@ public class Header extends JPanel {
         JPanel centerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 30, 0));
         centerPanel.setOpaque(false);
 
-        String[] menus = {"Quản lý Cửa hàng", "Quản lý nhân viên", "Báo cáo"};
-        for (String menu : menus) {
-            JButton btn = new JButton(menu);
-            btn.setForeground(Color.WHITE);
-            btn.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+        // Menu: Text hiển thị -> Page name
+        Map<String, String> menuItems = new LinkedHashMap<>();
+        menuItems.put("Quản lý sản phẩm", Main.PAGE_PRODUCTS);
+        menuItems.put("Quản lý nhân viên", Main.PAGE_EMPLOYEES);
+        menuItems.put("Báo cáo", Main.PAGE_REPORTS);
+
+        for (Map.Entry<String, String> entry : menuItems.entrySet()) {
+            String buttonText = entry.getKey();
+            String pageName = entry.getValue();
+
+            JButton btn = new JButton(buttonText);
+            
+            setNormalStyle(btn);
+
             btn.setContentAreaFilled(false);
             btn.setBorderPainted(false);
             btn.setFocusPainted(false);
+            btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+            btn.addActionListener(e -> {
+                if(activeBtn != null){
+                    setNormalStyle(activeBtn);
+                }
+                setActiveStyle(btn);
+                activeBtn = btn;
+
+                this.mainFrame.showPage(pageName);
+            });
+
             centerPanel.add(btn);
+
+            if(activeBtn == null){
+                setActiveStyle(btn);
+                activeBtn = btn;
+            }
         }
 
         /* ===== RIGHT ===== */
         JPanel rightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
         rightPanel.setOpaque(false);
 
-        JLabel lbluserName = new JLabel("Xin chào, " + Session.username);
-        lbluserName.setFont(new Font("Segoe UI", Font.PLAIN, 22));
-        lbluserName.setForeground(Color.WHITE);
-        rightPanel.add(lbluserName);
+        String username = (Session.username != null) ? Session.username : "Khách";
+        JLabel lblUserName = new JLabel("Xin chào, " + username);
+        lblUserName.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+        lblUserName.setForeground(Color.WHITE);
+
+        rightPanel.add(lblUserName);
 
         /* ===== ADD ===== */
         add(leftPanel, BorderLayout.WEST);
@@ -57,4 +93,13 @@ public class Header extends JPanel {
         add(rightPanel, BorderLayout.EAST);
     }
 
+    private void setActiveStyle(JButton btn) {
+        btn.setForeground(new Color(34, 134, 34)); 
+        btn.setFont(new Font("Segoe UI", Font.BOLD, 24)); // to hơn
+    }
+
+    private void setNormalStyle(JButton btn) {
+        btn.setForeground(Color.WHITE);
+        btn.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+    }
 }
