@@ -1,7 +1,7 @@
 package main;
 
 import javax.swing.*;
-
+import java.awt.event.*;
 import account.Login;
 import account.Session;
 
@@ -13,9 +13,9 @@ public class App {
             Login login = new Login();
 
             // Theo dõi khi Login đóng
-            login.addWindowListener(new java.awt.event.WindowAdapter() {
+            login.addWindowListener(new WindowAdapter() {
                 @Override
-                public void windowClosed(java.awt.event.WindowEvent e) {
+                public void windowClosed(WindowEvent e) {
 
                     // Nếu login thành công mới mở Main
                     if (Session.isLogin) {

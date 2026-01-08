@@ -1,7 +1,7 @@
 package account;
 
 public class Session {
-    public static boolean isLogin = true;
+    public static boolean isLogin = false;
     public static String username;
     public static String email;
 
